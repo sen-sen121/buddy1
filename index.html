@@ -20,6 +20,7 @@
       background-image: linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.5));
       color: white;
       transition: background-color 500ms ease;
+      touch-action: manipulation;
     }
     header {
       position: absolute;
@@ -28,6 +29,7 @@
       top: 0rem;
       padding: 1rem;
       background: inherit;
+      width: 100%;
     }
     .container {
       position: relative;
@@ -36,6 +38,7 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+      padding: 0 15px;
     }
     ul {
       list-style: none;
@@ -63,6 +66,8 @@
       grid-template-columns: 2.5rem auto;
       height: 2.4rem;
       transition: transform 500ms ease, background-color 500ms ease;
+      border-radius: 4px;
+      overflow: hidden;
     }
     ul > li.active {
       --lightness: 30%;
@@ -74,10 +79,12 @@
     }
     li > time {
       text-align: center;
+      font-size: 0.9rem;
     }
     li > span {
       padding-inline-start: 0.5rem;
       color: white;
+      font-size: 0.9rem;
     }
     .controls {
       position: absolute;
@@ -201,27 +208,205 @@
     .song-selector button.active {
       background: rgb(6, 60, 131);
     }
+    
+    /* Roll Down Button Styles */
+    .roll-down-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .roll-down-btn {
+      background: #39657e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .roll-down-btn:hover {
+      background: rgb(6, 60, 131);
+      transform: scale(1.05);
+    }
+    .roll-down-btn:active {
+      transform: scale(0.95);
+    }
+    .roll-down-label {
+      color: white;
+      font-size: 0.8rem;
+      text-align: center;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+    
+    /* Mobile-specific styles */
+    .mobile-controls {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 0;
+      right: 0;
+      justify-content: center;
+      gap: 20px;
+      z-index: 999;
+    }
+    .mobile-controls button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #39657e;
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
     @media (max-width: 768px) {
+      header {
+        padding: 0.5rem;
+      }
+      header h1 {
+        font-size: 1.5rem;
+      }
+      header p {
+        font-size: 0.9rem;
+      }
+      
       .container {
         flex-direction: column;
+        padding-top: 60px;
+        padding-bottom: 150px;
+        gap: 10px;
       }
+      
       .image-container {
         width: 150px;
         height: 150px;
       }
+      
+      ul {
+        height: 200px;
+        margin: 10px 0;
+      }
+      
+      ul > li {
+        width: 90%;
+        height: 2.2rem;
+        grid-template-columns: 2rem auto;
+        font-size: 0.8rem;
+      }
+      
+      li > time {
+        font-size: 0.8rem;
+      }
+      
+      li > span {
+        font-size: 0.8rem;
+        padding-inline-start: 0.3rem;
+      }
+      
+      .controls {
+        display: none;
+      }
+      
+      .mobile-controls {
+        display: flex;
+      }
+      
       .music-player {
         bottom: 10px;
         right: 10px;
+        left: 10px;
         font-size: 0.8rem;
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .music-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .volume-control {
+        width: 60px;
+      }
+      
+      .roll-down-container {
+        top: 70px;
+        right: 10px;
+      }
+      
+      .roll-down-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+      
+      .roll-down-label {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .image-container {
+        width: 120px;
+        height: 120px;
+      }
+      
+      ul > li {
+        width: 95%;
+        height: 2rem;
+        grid-template-columns: 1.8rem auto;
+      }
+      
+      li > time {
+        font-size: 0.75rem;
+      }
+      
+      li > span {
+        font-size: 0.75rem;
+      }
+      
+      .mobile-controls button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .roll-down-container {
+        top: 60px;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Alleah</h1>Frienny
+    <h1>Alleah</h1>
     <p>I am going Say </p>
   </header>
+  
+  <!-- Roll Down Button -->
+  <div class="roll-down-container">
+    <button class="roll-down-btn" id="rollDownBtn">▼</button>
+    <div class="roll-down-label">Roll Down</div>
+  </div>
+  
   <div class="container">
     <div class="image-container left-image"></div>
     <ul></ul>
@@ -230,6 +415,12 @@
       <button onclick="adjustDay(-1)">▲</button>
       <button onclick="adjustDay(1)">▼</button>
     </div>
+  </div>
+  
+  <!-- Mobile Controls -->
+  <div class="mobile-controls">
+    <button onclick="adjustDay(-1)">▲</button>
+    <button onclick="adjustDay(1)">▼</button>
   </div>
 
   <!-- Music Player -->
@@ -308,10 +499,15 @@
     const ulEl = document.querySelector("ul");
     const leftImage = document.querySelector(".left-image");
     const rightImage = document.querySelector(".right-image");
+    const rollDownBtn = document.getElementById("rollDownBtn");
     const d = new Date();
     let daynumber = d.getMonth() == 1 ? d.getDate() - 1 : 0;
     let activeIndex = daynumber;
     const rotate = -360 / febHolidays.length;
+    
+    // Roll Down Animation Variables
+    let isRollingDown = false;
+    let rollDownInterval;
 
     // Audio Player Variables
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -335,6 +531,10 @@
     let isPlaying = false;
     let audioPlayer = new Audio();
 
+    // Touch swipe variables
+    let touchStartY = 0;
+    let touchEndY = 0;
+
     init();
 
     function init() {
@@ -348,6 +548,9 @@
       });
       ulEl.style.setProperty("--rotateDegrees", rotate);
       adjustDay(0);
+
+      // Set up roll down button
+      rollDownBtn.addEventListener("click", toggleRollDown);
 
       // Set up audio event listeners
       audioPlayer.addEventListener('ended', playNextSong);
@@ -379,8 +582,50 @@
         }
       });
       
+      // Set up touch events for swipe navigation
+      document.addEventListener('touchstart', e => {
+        touchStartY = e.changedTouches[0].screenY;
+      });
+      
+      document.addEventListener('touchend', e => {
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+      });
+      
       // Load the first song
       loadCurrentSong();
+    }
+
+    function toggleRollDown() {
+      if (isRollingDown) {
+        // Stop rolling
+        clearInterval(rollDownInterval);
+        rollDownBtn.textContent = "▼";
+        rollDownBtn.style.background = "#39657e";
+      } else {
+        // Start rolling
+        rollDownBtn.textContent = "⏸️";
+        rollDownBtn.style.background = "#e74c3c";
+        rollDownInterval = setInterval(() => {
+          adjustDay(1);
+        }, 1000); // Adjust speed here (1000ms = 1 second)
+      }
+      isRollingDown = !isRollingDown;
+    }
+
+    function handleSwipe() {
+      const swipeDistance = touchStartY - touchEndY;
+      const minSwipeDistance = 50; // Minimum distance for a swipe to be registered
+      
+      if (Math.abs(swipeDistance) > minSwipeDistance) {
+        if (swipeDistance > 0) {
+          // Swipe up - go to next item
+          adjustDay(1);
+        } else {
+          // Swipe down - go to previous item
+          adjustDay(-1);
+        }
+      }
     }
 
     function togglePlayPause() {
